@@ -1,0 +1,26 @@
+{
+          "name": "MMM-Year-Progress",
+          "version": "1.0.0",
+          "description": "MagicMirror 2 module totrack the progress of the current year / month.",
+          "repository": {
+                    "type": "git",
+                    "url": "git+https://github.com/ryck/MMM-Year-Progress"
+          },
+          "keywords": [
+                    "magic mirror",
+                    "smart mirror",
+                    "human",
+                    "duration",
+                    "age",
+                    "humanize-duration",
+                    "module"
+          ],
+          "author": "Ricardo Gonzalez",
+          "contributors": "https://github.com/ryck/MMM-Year-Progress/graphs/contributors",
+          "license": "MIT",
+          "bugs": {
+                    "url": "https://github.com/ryck/MMM-Year-Progress/issues"
+          },
+          "homepage": "https://github.com/ryck/MMM-Year-Progress#readme",
+          "dependencies": {}
+}
