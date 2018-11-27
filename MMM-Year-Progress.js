@@ -58,6 +58,16 @@ Module.register("MMM-Year-Progress", {
 
 		wrapper.appendChild(monthWrapper);
 
+		// Week
+		var weekWrapper = document.createElement("div");
+		const weekDay = moment().isoWeekday()
+		const percentWeek = Math.floor(weekDay/7*100);
+		const weekBar = this.progressBar(percentWeek)
+		const weekDisplay = weekDay + "/7" + " " + weekBar + " " + percentWeek + "%"
+		weekWrapper.innerHTML = weekDisplay
+
+		wrapper.appendChild(weekWrapper);
+
 		return wrapper;
 	},
 
