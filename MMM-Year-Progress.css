@@ -2,3 +2,7 @@
 	font-family: Monaco, MonoSpace;
 	white-space: pre-wrap;
 }
+.percent {
+	width: 2em;
+  display: inline-block;
+}
