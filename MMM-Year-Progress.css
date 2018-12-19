@@ -2,7 +2,13 @@
 	font-family: Monaco, MonoSpace;
 	white-space: pre-wrap;
 }
+
+
+.numbers {
+	text-align: right;
+	padding-right: 0.5em;
+}
+.bar {
+}
 .percent {
-	width: 2em;
-  display: inline-block;
 }

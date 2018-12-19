@@ -28,11 +28,41 @@ Module.register("MMM-Year-Progress", {
 	},
 	// Override dom generator.
 	getDom: function() {
+
+
+
 		let wrapper = document.createElement("div");
-		wrapper.className = "small align-right progress-bar"
+		wrapper.className = "small progress-bar"
+
+		// Start building table.
+		const dataTable = document.createElement("table");
+
+		let yearRow = document.createElement("tr");
+		let monthRow = document.createElement("tr");
+		let weekRow = document.createElement("tr");
+
+		let yearNumberCell = document.createElement("td");
+		yearNumberCell.className = "data numbers year";
+		let yearBarCell = document.createElement("td");
+		yearBarCell.className = "data bar year";
+		let yearPercentCell = document.createElement("td");
+		yearPercentCell.className = "data percent year";
+
+		let monthNumberCell = document.createElement("td");
+		monthNumberCell.className = "data numbers month";
+		let monthBarCell = document.createElement("td");
+		monthBarCell.className = "data bar month";
+		let monthPercentCell = document.createElement("td");
+		monthPercentCell.className = "data percent month";
+
+		let weekNumberCell = document.createElement("td");
+		weekNumberCell.className = "data numbers week";
+		let weekBarCell = document.createElement("td");
+		weekBarCell.className = "data bar week";
+		let weekPercentCell = document.createElement("td");
+		weekPercentCell.className = "data percent week";
 
 		// Year
-		let yearWrapper = document.createElement("div");
 		let numWrapper = document.createElement("span");
 		numWrapper.className="numbers"
 		let barWrapper = document.createElement("span");
@@ -48,48 +78,58 @@ Module.register("MMM-Year-Progress", {
 		const daysInYear = isLeapYear(date.getFullYear()) ? 366 : 365
 		const percentYear = Math.floor((dayYear / daysInYear) * 100)
 		const yearBar = this.progressBar(percentYear)
-		numWrapper = dayYear + "/" + daysInYear
-		barWrapper = yearBar
-		percentWrapper = percentYear + "&%"
-		const yearDisplay = numWrapper + " " + barWrapper + " " + percentWrapper
-		yearWrapper.innerHTML = yearDisplay;
+		yearNumberCell.innerHTML = dayYear + "/" + daysInYear
+		yearBarCell.innerHTML = yearBar
+		yearPercentCell.innerHTML = percentYear + "%"
 
-		wrapper.appendChild(yearWrapper);
+		yearRow.append(yearNumberCell)
+		yearRow.append(yearBarCell)
+		yearRow.append(yearPercentCell)
+
+		dataTable.appendChild(yearRow);
 
 		// Month
-		var monthWrapper = document.createElement("div");
 		const daysInMonth = new Date(moment().year(), moment().month() + 1, 0).getDate();
 		const dayMonth = moment().date();
 		const percentMonth = Math.floor(dayMonth/daysInMonth*100);
-		console.log('percentMonth', percentMonth);
+		percentWrapper = percentMonth + "%"
 		const monthBar = this.progressBar(percentMonth)
-		const monthDisplay = dayMonth + "/" + daysInMonth + " " + monthBar + " <span class='percent'>" + percentMonth + "%</span>"
-		monthWrapper.innerHTML = monthDisplay
 
-		wrapper.appendChild(monthWrapper);
+		monthNumberCell.innerHTML = dayMonth + "/" + daysInMonth
+		monthBarCell.innerHTML = monthBar
+		monthPercentCell.innerHTML = percentMonth + "%"
+
+		monthRow.append(monthNumberCell)
+		monthRow.append(monthBarCell)
+		monthRow.append(monthPercentCell)
+
+		dataTable.appendChild(monthRow);
 
 		// Week
-		var weekWrapper = document.createElement("div");
 		const weekDay = moment().isoWeekday()
 		const percentWeek = Math.floor(weekDay/7*100);
-		console.log('percentWeek', percentWeek);
+		percentWrapper = percentWeek + "%"
 		const weekBar = this.progressBar(percentWeek)
-		const weekDisplay = weekDay + "/7" + " " + weekBar + " <span class='percent'>" + percentWeek + "%</span>"
-		weekWrapper.innerHTML = weekDisplay
 
-		wrapper.appendChild(weekWrapper);
+		weekNumberCell.innerHTML = weekDay + "/" + 7
+		weekBarCell.innerHTML = weekBar
+		weekPercentCell.innerHTML = percentWeek + "%"
+
+		weekRow.append(weekNumberCell)
+		weekRow.append(weekBarCell)
+		weekRow.append(weekPercentCell)
+
+		dataTable.appendChild(weekRow);
+
+		wrapper.appendChild(dataTable);
 
 		return wrapper;
 	},
 
 	progressBar: function(percent) {
-		console.log('percent', percent);
 		let progressBar = ""
 		for (let i = 5; i <= 100; i += 5) {
-			console.log('i', i);
-
 			progressBar = (i <= percent) ? progressBar + "▓" : progressBar + "░"
-			console.log('progressBar', progressBar);
 		}
 		return progressBar
 	}
