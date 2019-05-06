@@ -15,17 +15,19 @@ This module tracks the progress of the year / month.
 ![](screenshots/screenshot.png)
 
 ## Installation
+
 ```bash
 git clone https://github.com/ryck/MMM-Year-Progress.git && cd MMM-Year-Progress && npm install && cd ..
 ```
+
 ## Config
+
 The entry in `config.js` can include the following options:
 
-|Option|Description|
-|---|---|
-|`updateInterval `|How often the arrival information is updated.<br><br>**Type:** `integer`<br>**Default:** `1 min`|
-| `debug`             | Show debug information. <br><br>  **Possible values:** `true` or `false`  <br> **Default:** `false`|
-
+| Option           | Description                                                                                       |
+| ---------------- | ------------------------------------------------------------------------------------------------- |
+| `updateInterval` | How often the arrival information is updated.<br><br>**Type:** `integer`<br>**Default:** `1 min`  |
+| `debug`          | Show debug information. <br><br> **Possible values:** `true` or `false` <br> **Default:** `false` |
 
 Here is an example of an entry in `config.js`
 
@@ -42,8 +44,9 @@ Here is an example of an entry in `config.js`
 ```
 
 ## Dependencies
+
 - None
 
-
 ## Thanks To...
+
 - [Michael Teeuw](https://github.com/MichMich) for the [MagicMirror2](https://github.com/MichMich/MagicMirror/) framework that made this module possible.
