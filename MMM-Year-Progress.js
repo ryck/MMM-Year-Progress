@@ -74,7 +74,7 @@ Module.register("MMM-Year-Progress", {
 		const isLeapYear = year => {
 			return year % 400 === 0 || (year % 100 !== 0 && year % 4 === 0)
 		}
-		const dayYear = Math.round((((date - initialDate) / (1000 * 60 * 60 * 24))))
+		const dayYear = moment().dayOfYear()
 		const daysInYear = isLeapYear(date.getFullYear()) ? 366 : 365
 		const percentYear = Math.floor((dayYear / daysInYear) * 100)
 		const yearBar = this.progressBar(percentYear)
