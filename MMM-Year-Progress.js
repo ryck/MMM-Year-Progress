@@ -6,131 +6,129 @@
  */
 Module.register("MMM-Year-Progress", {
 	defaults: {
+		accent: "#999",
 		updateInterval: 60 * 1 * 1000, // Every minute
-		debug: false
+		debug: false,
 	},
-	start: function() {
-		var self = this;
-		setInterval(function() {
-			self.updateDom(); // no speed defined, so it updates instantly.
-		}, this.config.updateInterval);
+	start() {
+		this.updateTimer = null;
+		this.updateDom(0);
+		this.scheduleDomUpdate();
 	},
-	getStyles: function() {
+
+	scheduleDomUpdate() {
+		const interval = Math.max(this.config.updateInterval, 1000);
+		if (this.updateTimer) {
+			clearInterval(this.updateTimer);
+		}
+		this.updateTimer = setInterval(() => this.updateDom(), interval);
+	},
+	getStyles() {
 		return ["MMM-Year-Progress.css"];
 	},
 	// Define required scripts.
-	getScripts: function() {
+	getScripts() {
 		return ["moment.js"];
 	},
 	//Define header for module.
-	getHeader: function() {
+	getHeader() {
 		return this.data.header;
 	},
 	// Override dom generator.
-	getDom: function() {
+	getDom() {
+		const wrapper = document.createElement("div");
+		wrapper.className = "progress-bar";
+		wrapper.style.setProperty(
+			"--mmm-year-progress-accent",
+			this.config.accent || this.defaults.accent,
+		);
 
-
-
-		let wrapper = document.createElement("div");
-		wrapper.className = "small progress-bar"
-
-		// Start building table.
 		const dataTable = document.createElement("table");
-
-		let yearRow = document.createElement("tr");
-		let monthRow = document.createElement("tr");
-		let weekRow = document.createElement("tr");
-
-		let yearNumberCell = document.createElement("td");
-		yearNumberCell.className = "data numbers year";
-		let yearBarCell = document.createElement("td");
-		yearBarCell.className = "data bar year";
-		let yearPercentCell = document.createElement("td");
-		yearPercentCell.className = "data percent year";
-
-		let monthNumberCell = document.createElement("td");
-		monthNumberCell.className = "data numbers month";
-		let monthBarCell = document.createElement("td");
-		monthBarCell.className = "data bar month";
-		let monthPercentCell = document.createElement("td");
-		monthPercentCell.className = "data percent month";
-
-		let weekNumberCell = document.createElement("td");
-		weekNumberCell.className = "data numbers week";
-		let weekBarCell = document.createElement("td");
-		weekBarCell.className = "data bar week";
-		let weekPercentCell = document.createElement("td");
-		weekPercentCell.className = "data percent week";
-
-		// Year
-		let numWrapper = document.createElement("span");
-		numWrapper.className="numbers"
-		let barWrapper = document.createElement("span");
-		barWrapper.className = "bar"
-		let percentWrapper = document.createElement("span");
-		percentWrapper.className = "percent"
-		date = new Date()
-		const initialDate = new Date(date.getFullYear(), 0, 1)
-		const isLeapYear = year => {
-			return year % 400 === 0 || (year % 100 !== 0 && year % 4 === 0)
-		}
-		const dayYear = moment().dayOfYear()
-		const daysInYear = isLeapYear(date.getFullYear()) ? 366 : 365
-		const percentYear = Math.floor((dayYear / daysInYear) * 100)
-		const yearBar = this.progressBar(percentYear)
-		yearNumberCell.innerHTML = dayYear + "/" + daysInYear
-		yearBarCell.innerHTML = yearBar
-		yearPercentCell.innerHTML = percentYear + "%"
-
-		yearRow.append(yearNumberCell)
-		yearRow.append(yearBarCell)
-		yearRow.append(yearPercentCell)
-
-		dataTable.appendChild(yearRow);
-
-		// Month
-		const daysInMonth = new Date(moment().year(), moment().month() + 1, 0).getDate();
-		const dayMonth = moment().date();
-		const percentMonth = Math.floor(dayMonth/daysInMonth*100);
-		percentWrapper = percentMonth + "%"
-		const monthBar = this.progressBar(percentMonth)
-
-		monthNumberCell.innerHTML = dayMonth + "/" + daysInMonth
-		monthBarCell.innerHTML = monthBar
-		monthPercentCell.innerHTML = percentMonth + "%"
-
-		monthRow.append(monthNumberCell)
-		monthRow.append(monthBarCell)
-		monthRow.append(monthPercentCell)
-
-		dataTable.appendChild(monthRow);
-
-		// Week
-		const weekDay = moment().isoWeekday()
-		const percentWeek = Math.floor(weekDay/7*100);
-		percentWrapper = percentWeek + "%"
-		const weekBar = this.progressBar(percentWeek)
-
-		weekNumberCell.innerHTML = weekDay + "/" + 7
-		weekBarCell.innerHTML = weekBar
-		weekPercentCell.innerHTML = percentWeek + "%"
-
-		weekRow.append(weekNumberCell)
-		weekRow.append(weekBarCell)
-		weekRow.append(weekPercentCell)
-
-		dataTable.appendChild(weekRow);
+		this.collectProgressData().forEach((rowData) => {
+			dataTable.appendChild(this.buildRow(rowData));
+		});
 
 		wrapper.appendChild(dataTable);
-
 		return wrapper;
 	},
 
-	progressBar: function(percent) {
-		let progressBar = ""
-		for (let i = 5; i <= 100; i += 5) {
-			progressBar = (i <= percent) ? progressBar + "▓" : progressBar + "░"
+	collectProgressData() {
+		const today = moment();
+		const daysInYear = moment([today.year(), 0, 1]).isLeapYear() ? 366 : 365;
+		const daysInMonth = today.daysInMonth();
+		const weekLength = 7;
+
+		return [
+			{
+				type: "year",
+				current: today.dayOfYear(),
+				total: daysInYear,
+			},
+			{
+				type: "month",
+				current: today.date(),
+				total: daysInMonth,
+			},
+			{
+				type: "week",
+				current: today.isoWeekday(),
+				total: weekLength,
+			},
+		];
+	},
+
+	buildRow(data) {
+		const row = document.createElement("tr");
+		const percent = this.calculatePercent(data.current, data.total);
+
+		row.appendChild(
+			this.buildCell(
+				`data numbers ${data.type}`,
+				`${data.current}/${data.total}`,
+			),
+		);
+		row.appendChild(
+			this.buildCell(
+				`data bar ${data.type}`,
+				this.progressBar(percent, data.type),
+			),
+		);
+		row.appendChild(this.buildCell(`data percent ${data.type}`, `${percent}%`));
+
+		return row;
+	},
+
+	buildCell(className, value) {
+		const cell = document.createElement("td");
+		cell.className = className;
+		if (value instanceof Node) {
+			cell.appendChild(value);
+		} else {
+			cell.textContent = value;
 		}
-		return progressBar
-	}
+		return cell;
+	},
+
+	progressBar(percent, type) {
+		const track = document.createElement("div");
+		track.className = `progress-track ${type || ""}`.trim();
+		track.setAttribute("role", "progressbar");
+		track.setAttribute("aria-valuenow", percent);
+		track.setAttribute("aria-valuemin", "0");
+		track.setAttribute("aria-valuemax", "100");
+
+		const fill = document.createElement("div");
+		fill.className = "progress-fill";
+		fill.style.width = `${percent}%`;
+
+		track.appendChild(fill);
+		return track;
+	},
+
+	calculatePercent(current, total) {
+		if (!total) {
+			return 0;
+		}
+		return Math.max(0, Math.min(100, Math.round((current / total) * 100)));
+	},
 });

@@ -1,13 +1,51 @@
 .progress-bar {
-  font-family: Monaco, MonoSpace;
-  white-space: pre-wrap;
+	font-family: "Roboto", "Helvetica Neue", Arial, sans-serif;
+	font-size: 0.9rem;
+}
+
+.progress-bar table {
+	border-collapse: collapse;
+}
+
+.data {
+	padding: 0.2rem 0.4rem;
 }
 
 .numbers {
-  text-align: right;
-  padding-right: 10px;
+	text-align: right;
+	padding-right: 0.5rem;
+	opacity: 0.85;
 }
 
 .percent {
-  text-align: right;
+	text-align: right;
+	white-space: nowrap;
+}
+
+.progress-track {
+	position: relative;
+	width: 150px;
+	height: 16px;
+	border-radius: 0;
+	background: color-mix(
+		in srgb,
+		var(--mmm-year-progress-accent, #999) 15%,
+		#000
+	);
+	overflow: hidden;
+}
+
+.progress-fill {
+	position: absolute;
+	left: 0;
+	top: 0;
+	bottom: 0;
+	background: linear-gradient(
+		90deg,
+		color-mix(in srgb, var(--mmm-year-progress-accent, #999) 35%, #fff) 0%,
+		var(--mmm-year-progress-accent, #999) 60%,
+		color-mix(in srgb, var(--mmm-year-progress-accent, #999) 80%, #000) 100%
+	);
+	overflow: hidden;
+	transition: width 250ms ease-out;
 }
