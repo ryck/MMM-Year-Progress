@@ -20,7 +20,7 @@ This module tracks the progress of the year / month.
 | :------------- | :--------------- |
 | _green accent_ | _purple accent_ |
 
-## Installation
+## Installation`
 
 ```bash
 git clone https://github.com/ryck/MMM-Year-Progress.git && cd MMM-Year-Progress && npm install && cd ..
@@ -33,6 +33,7 @@ The entry in `config.js` can include the following options:
 | Option           | Description                                                                                       |
 | ---------------- | ------------------------------------------------------------------------------------------------- |
 | `accent`         | Hex/RGB/CSS color used for the progress bars.<br><br>**Type:** `string`<br>**Default:** `#999` |
+| `trackers`       | Space-separated list choosing which trackers to show (`year`, `month`, `week`). Separate each tracker with a single space,<br><br>**Type:** `string`<br>**Default:** `"year month week"` |
 | `updateInterval` | How often the arrival information is updated.<br><br>**Type:** `integer`<br>**Default:** `1 min`  |
 | `debug`          | Show debug information. <br><br> **Possible values:** `true` or `false` <br> **Default:** `false` |
 
@@ -44,7 +45,8 @@ Here is an example of an entry in `config.js`
 	position: 'bottom_left',
 	header: 'Progress',
 	config: {
-		accent: '#61e9f3ff'
+		accent: '#61e9f3ff',
+		trackers: 'year week', // note the space-separated values
 		updateInterval: 60 * 60 * 1000,
 		debug: false,
 	}

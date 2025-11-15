@@ -1,6 +1,6 @@
 {
 	"name": "mmm-year-progress",
-	"version": "2.0.0",
+	"version": "2.1.0",
 	"description": "MagicMirror 2 module to track the progress of the current year / month / week.",
 	"repository": {
 		"type": "git",

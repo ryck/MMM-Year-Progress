@@ -9,6 +9,7 @@ Module.register("MMM-Year-Progress", {
 		accent: "#999",
 		updateInterval: 60 * 1 * 1000, // Every minute
 		debug: false,
+		trackers: "year month week",
 	},
 	start() {
 		this.updateTimer = null;
@@ -57,24 +58,50 @@ Module.register("MMM-Year-Progress", {
 		const daysInYear = moment([today.year(), 0, 1]).isLeapYear() ? 366 : 365;
 		const daysInMonth = today.daysInMonth();
 		const weekLength = 7;
-
-		return [
-			{
+		const trackerData = {
+			year: {
 				type: "year",
 				current: today.dayOfYear(),
 				total: daysInYear,
 			},
-			{
+			month: {
 				type: "month",
 				current: today.date(),
 				total: daysInMonth,
 			},
-			{
+			week: {
 				type: "week",
 				current: today.isoWeekday(),
 				total: weekLength,
 			},
-		];
+		};
+
+		return this.getEnabledTrackers()
+			.map((type) => trackerData[type])
+			.filter(Boolean);
+	},
+
+	getEnabledTrackers() {
+		const defaults = ["year", "month", "week"];
+		const configured =
+			this.config.trackers ?? this.defaults.trackers ?? defaults;
+		let tokens = [];
+		if (Array.isArray(configured)) {
+			tokens = configured;
+		} else if (typeof configured === "string") {
+			tokens = configured.split(/\s+/);
+		} else {
+			tokens = defaults;
+		}
+		const normalized = Array.from(
+			new Set(
+				tokens
+					.map((token) => token?.toString().trim().toLowerCase())
+					.filter(Boolean),
+			),
+		);
+		const valid = normalized.filter((token) => defaults.includes(token));
+		return valid.length ? valid : defaults;
 	},
 
 	buildRow(data) {
