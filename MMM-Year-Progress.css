@@ -5,10 +5,15 @@
 
 .progress-bar table {
 	border-collapse: collapse;
+	width: 100%;
 }
 
 .data {
 	padding: 0.2rem 0.4rem;
+}
+
+.data.bar {
+	width: 100%;
 }
 
 .numbers {
@@ -24,7 +29,8 @@
 
 .progress-track {
 	position: relative;
-	width: 150px;
+	width: 100%;
+	min-width: 140px;
 	height: 16px;
 	border-radius: 0;
 	background: color-mix(

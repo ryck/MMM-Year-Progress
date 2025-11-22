@@ -1,6 +1,6 @@
 {
 	"name": "mmm-year-progress",
-	"version": "2.1.1",
+	"version": "2.2.0",
 	"description": "MagicMirror 2 module to track the progress of the current year / month / week.",
 	"repository": {
 		"type": "git",
@@ -17,7 +17,7 @@
 	],
 	"author": "Ricardo Gonzalez",
 	"contributors": [
-		"https://github.com/ryck/MMM-AQI/graphs/contributors"
+		"https://github.com/ryck/MMM-Year-Progress/graphs/contributors"
 	],
 	"license": "MIT",
 	"bugs": {
