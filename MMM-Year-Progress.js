@@ -10,6 +10,7 @@ Module.register("MMM-Year-Progress", {
 		updateInterval: 60 * 1 * 1000, // Every minute
 		debug: false,
 		trackers: "year month week",
+		modern: false,
 	},
 	start() {
 		this.updateTimer = null;
@@ -107,6 +108,8 @@ Module.register("MMM-Year-Progress", {
 	buildRow(data) {
 		const row = document.createElement("tr");
 		const percent = this.calculatePercent(data.current, data.total);
+		const barClass = this.config.modern ? "modern" : "classic";
+		const barContent = this.renderBar(percent, data.type);
 
 		row.appendChild(
 			this.buildCell(
@@ -115,10 +118,7 @@ Module.register("MMM-Year-Progress", {
 			),
 		);
 		row.appendChild(
-			this.buildCell(
-				`data bar ${data.type}`,
-				this.progressBar(percent, data.type),
-			),
+			this.buildCell(`data bar ${data.type} ${barClass}`, barContent),
 		);
 		row.appendChild(this.buildCell(`data percent ${data.type}`, `${percent}%`));
 
@@ -136,7 +136,13 @@ Module.register("MMM-Year-Progress", {
 		return cell;
 	},
 
-	progressBar(percent, type) {
+	renderBar(percent, type) {
+		return this.config.modern
+			? this.renderModernBar(percent, type)
+			: this.renderAsciiBar(percent);
+	},
+
+	renderModernBar(percent, type) {
 		const track = document.createElement("div");
 		track.className = `progress-track ${type || ""}`.trim();
 		track.setAttribute("role", "progressbar");
@@ -150,6 +156,14 @@ Module.register("MMM-Year-Progress", {
 
 		track.appendChild(fill);
 		return track;
+	},
+
+	renderAsciiBar(percent) {
+		let bar = "";
+		for (let i = 5; i <= 100; i += 5) {
+			bar += i <= percent ? "▓" : "░";
+		}
+		return bar;
 	},
 
 	calculatePercent(current, total) {

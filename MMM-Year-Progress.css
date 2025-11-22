@@ -16,6 +16,12 @@
 	width: 100%;
 }
 
+.data.bar.classic {
+	font-family: "Roboto Mono", "Courier New", monospace;
+	white-space: nowrap;
+	letter-spacing: 1px;
+}
+
 .numbers {
 	text-align: right;
 	padding-right: 0.5rem;

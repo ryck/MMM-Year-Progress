@@ -12,6 +12,15 @@ This module tracks the progress of the year / month.
 
 ## Screenshots
 
+### Classic
+
+
+| ![](/screenshots/screenshot_classic.png) |
+| :------------- |
+| _classic ASCII mode_ |
+
+### Modern
+
 | ![](/screenshots/screenshot_default.png) | ![](/screenshots/screenshot_yellow.png) |
 | :------------- | :--------------- |
 | _default accent_ | _yellow accent_ |
@@ -33,7 +42,8 @@ The entry in `config.js` can include the following options:
 | Option           | Description                                                                                       |
 | ---------------- | ------------------------------------------------------------------------------------------------- |
 | `accent`         | Hex/RGB/CSS color used for the progress bars.<br><br>**Type:** `string`<br>**Default:** `#999` |
-| `trackers`       | Space-separated list choosing which trackers to show (`year`, `month`, `week`). Separate each tracker with a single space,<br><br>**Type:** `string`<br>**Default:** `"year month week"` |
+| `trackers`       | Space-separated list choosing which trackers to show (`year`, `month`, `week`). Separate each tracker with a single space, not commas.<br><br>**Type:** `string`<br>**Default:** `"year month week"` |
+| `modern`         | Use the modern CSS-based progress bars (`true`) or fall back to ASCII blocks for legacy browsers (`false`).<br><br>**Type:** `boolean`<br>**Default:** `false` |
 | `updateInterval` | How often the arrival information is updated.<br><br>**Type:** `integer`<br>**Default:** `1 min`  |
 | `debug`          | Show debug information. <br><br> **Possible values:** `true` or `false` <br> **Default:** `false` |
 
@@ -47,6 +57,7 @@ Here is an example of an entry in `config.js`
 	config: {
 		accent: '#61e9f3ff',
 		trackers: 'year week', // note the space-separated values
+		modern: true, // set false for ASCII bars (better legacy compatibility)
 		updateInterval: 60 * 60 * 1000,
 		debug: false,
 	}
